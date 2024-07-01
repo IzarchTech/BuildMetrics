@@ -3,14 +3,14 @@ namespace BuildMetrics.Lib.Interfaces;
 public interface IExcavation
 {
     /// <summary>
-    /// Volume of earth to be excavated
+    /// Get volume of earth to be excavated
     /// </summary>
     /// <returns>Volume of excavation</returns>
-    float VolumeOfExcavation();
+    float GetVolumeOfExcavation();
 
     /// <summary>
-    /// Volume of earth to be carted away
+    /// Get volume of earth to be carted away
     /// </summary>
     /// <returns>Volume of cart away</returns>
-    float VolumeOfCartAway();
+    float GetVolumeOfCartAway();
 }
