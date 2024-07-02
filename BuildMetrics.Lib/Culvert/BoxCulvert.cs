@@ -15,6 +15,7 @@ public class BoxCulvert(
     double width,
     double depth,
     double span,
+    double thickness,
     double blindingThickness,
     double workingAllowance,
     uint noOfCells) : IExcavation, IBlinding, IFormWork, IConcrete
@@ -40,6 +41,12 @@ public class BoxCulvert(
         depth <= 0.0 ? throw new ArgumentException("Depth should be greater than 0.0") : depth;
 
     /// <summary>
+    /// Thickness of the culvert
+    /// </summary>
+    public double Thickness { get; } =
+        thickness <= 0.0 ? throw new ArgumentException("Thickness should be greater than 0.0") : thickness;
+
+    /// <summary>
     /// Span of the culvert
     /// </summary>
     public double Span { get; } = span <= 0.0 ? throw new ArgumentException("Span should be greater than 0.0") : span;
@@ -56,12 +63,12 @@ public class BoxCulvert(
     /// </summary>
     public double WorkingAllowance { get; } = workingAllowance < 0.0
         ? throw new ArgumentException("Working allowance should be greater than 0.0")
-        : span;
+        : workingAllowance;
 
     /// <summary>
     /// Culvert depth
     /// </summary>
-    public double CulvertDepth => Depth + 2 * BlindingThickness;
+    public double CulvertDepth => Depth + 2 * Thickness;
 
     /// <summary>
     /// Excavation depth
@@ -71,7 +78,7 @@ public class BoxCulvert(
     /// <summary>
     /// Culvert width
     /// </summary>
-    public double CulvertWidth => BlindingThickness * (NoOfCells + 1) + NoOfCells * Width;
+    public double CulvertWidth => Thickness * (NoOfCells + 1) + NoOfCells * Width;
 
     /// <summary>
     /// Excavation width
@@ -90,11 +97,6 @@ public class BoxCulvert(
     public double GetVolumeOfExcavation()
     {
         return ExcavationDepth * ExcavationWidth * Span;
-    }
-
-    public double GetVolumeOfCartAway()
-    {
-        return GetVolumeOfExcavation() - Span * GetAreaOfFluidFlowFace();
     }
 
     public double GetAreaOfFormWork()
