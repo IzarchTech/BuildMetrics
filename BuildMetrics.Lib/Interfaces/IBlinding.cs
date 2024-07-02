@@ -6,5 +6,5 @@ public interface IBlinding
     /// Get volume of blinding
     /// </summary>
     /// <returns>Volume of blinding</returns>
-    float GetVolumeOfBlinding();
+    double GetVolumeOfBlinding();
 }

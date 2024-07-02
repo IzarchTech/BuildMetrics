@@ -6,5 +6,5 @@ public interface IFormWork
     /// Area of form-work required for construction
     /// </summary>
     /// <returns>Area of form-work</returns>
-    float GetAreaOfFormWork();
+    double GetAreaOfFormWork();
 }

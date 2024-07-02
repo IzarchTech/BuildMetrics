@@ -12,11 +12,11 @@ namespace BuildMetrics.Lib.Culvert;
 /// <param name="workingAllowance">Working allowance</param>
 /// <param name="noOfCells">Number of cells</param>
 public class BoxCulvert(
-    float width,
-    float depth,
-    float span,
-    float blindingThickness,
-    float workingAllowance,
+    double width,
+    double depth,
+    double span,
+    double blindingThickness,
+    double workingAllowance,
     uint noOfCells) : IExcavation, IBlinding, IFormWork, IConcrete
 {
     #region Public Members
@@ -30,74 +30,74 @@ public class BoxCulvert(
     /// <summary>
     /// Width of the cell
     /// </summary>
-    public float Width { get; } =
+    public double Width { get; } =
         width <= 0.0 ? throw new ArgumentException("Width should be greater than 0.0") : width;
 
     /// <summary>
     /// Depth of the cell
     /// </summary>
-    public float Depth { get; } =
+    public double Depth { get; } =
         depth <= 0.0 ? throw new ArgumentException("Depth should be greater than 0.0") : depth;
 
     /// <summary>
     /// Span of the culvert
     /// </summary>
-    public float Span { get; } = span <= 0.0 ? throw new ArgumentException("Span should be greater than 0.0") : span;
+    public double Span { get; } = span <= 0.0 ? throw new ArgumentException("Span should be greater than 0.0") : span;
 
     /// <summary>
     /// Blinding thickness
     /// </summary>
-    public float BlindingThickness { get; } = blindingThickness < 0.0
+    public double BlindingThickness { get; } = blindingThickness < 0.0
         ? throw new ArgumentException("Blinding thickness should be greater than or equal 0.0")
         : blindingThickness;
 
     /// <summary>
     /// Working allowance
     /// </summary>
-    public float WorkingAllowance { get; } = workingAllowance < 0.0
+    public double WorkingAllowance { get; } = workingAllowance < 0.0
         ? throw new ArgumentException("Working allowance should be greater than 0.0")
         : span;
 
     /// <summary>
     /// Culvert depth
     /// </summary>
-    public float CulvertDepth => Depth + 2 * BlindingThickness;
+    public double CulvertDepth => Depth + 2 * BlindingThickness;
 
     /// <summary>
     /// Excavation depth
     /// </summary>
-    public float ExcavationDepth => CulvertDepth + BlindingThickness;
+    public double ExcavationDepth => CulvertDepth + BlindingThickness;
 
     /// <summary>
     /// Culvert width
     /// </summary>
-    public float CulvertWidth => BlindingThickness * (NoOfCells + 1) + NoOfCells * Width;
+    public double CulvertWidth => BlindingThickness * (NoOfCells + 1) + NoOfCells * Width;
 
     /// <summary>
     /// Excavation width
     /// </summary>
-    public float ExcavationWidth => CulvertWidth + 2 * WorkingAllowance;
+    public double ExcavationWidth => CulvertWidth + 2 * WorkingAllowance;
 
     #endregion
 
     #region Public Methods
 
-    public float GetVolumeOfBlinding()
+    public double GetVolumeOfBlinding()
     {
         return ExcavationWidth * BlindingThickness * Span;
     }
 
-    public float GetVolumeOfExcavation()
+    public double GetVolumeOfExcavation()
     {
         return ExcavationDepth * ExcavationWidth * Span;
     }
 
-    public float GetVolumeOfCartAway()
+    public double GetVolumeOfCartAway()
     {
         return GetVolumeOfExcavation() - Span * GetAreaOfFluidFlowFace();
     }
 
-    public float GetAreaOfFormWork()
+    public double GetAreaOfFormWork()
     {
         var innerFace = (2 * Depth + Width) * Span;
         var outerFace = 2 * CulvertDepth * Span;
@@ -106,7 +106,7 @@ public class BoxCulvert(
         return innerFace + outerFace + fluidFlowFace;
     }
 
-    public float GetVolumeOfConcrete()
+    public double GetVolumeOfConcrete()
     {
         return Span * (GetAreaOfFluidFlowFace() - GetAreaOfHollowSection());
     }
@@ -119,7 +119,7 @@ public class BoxCulvert(
     /// Get area of hollow section
     /// </summary>
     /// <returns>Area of hollow section</returns>
-    private float GetAreaOfHollowSection()
+    private double GetAreaOfHollowSection()
     {
         return NoOfCells * Width * Depth;
     }
@@ -128,7 +128,7 @@ public class BoxCulvert(
     /// Get area of fluid flow face section
     /// </summary>
     /// <returns>Area of fluid flow face</returns>
-    private float GetAreaOfFluidFlowFace()
+    private double GetAreaOfFluidFlowFace()
     {
         return CulvertWidth * CulvertDepth;
     }
