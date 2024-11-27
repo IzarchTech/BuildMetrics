@@ -101,7 +101,7 @@ public class BoxCulvert(
 
     public double GetAreaOfFormWork()
     {
-        var innerFace = (2 * Depth + Width) * Span;
+        var innerFace = (2 * Depth + Width) * Span * noOfCells;
         var outerFace = 2 * CulvertDepth * Span;
         var fluidFlowFace = 2 * (GetAreaOfFluidFlowFace() - GetAreaOfHollowSection());
 
