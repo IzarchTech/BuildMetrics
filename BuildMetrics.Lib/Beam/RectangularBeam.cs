@@ -23,12 +23,12 @@ public class RectangularBeam(
     /// <summary>
     /// Depth of the beam
     /// </summary>
-    public double Depth { get; } = depth <= 0 ? throw new ArgumentException("depth should be greater than 0.0") : width;
+    public double Depth { get; } = depth <= 0 ? throw new ArgumentException("depth should be greater than 0.0") : depth;
 
     /// <summary>
     /// Span of the beam
     /// </summary>
-    public double Span { get; } = span <= 0 ? throw new ArgumentException("span should be greater than 0.0") : width;
+    public double Span { get; } = span <= 0 ? throw new ArgumentException("span should be greater than 0.0") : span;
 
     #endregion
 
