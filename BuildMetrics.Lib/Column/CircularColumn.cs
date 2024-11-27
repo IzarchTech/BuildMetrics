@@ -27,7 +27,7 @@ public class CircularColumn(
 
     #endregion
 
-    #region Public Members
+    #region Public Methods
 
     /// <inheritdoc cref="IFormWork.GetAreaOfFormWork"/>
     /// <remarks>
