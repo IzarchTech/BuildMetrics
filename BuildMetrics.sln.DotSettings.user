@@ -3,5 +3,8 @@
   &lt;TestAncestor&gt;
     &lt;TestId&gt;NUnit3x::7703CB28-B291-46D6-BC89-0507E70121D6::net8.0::BuildMetrics.Lib.Test.BoxCulvertTests&lt;/TestId&gt;
     &lt;TestId&gt;NUnit3x::7703CB28-B291-46D6-BC89-0507E70121D6::net8.0::BuildMetrics.Lib.Test.RectangularDrainTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::7703CB28-B291-46D6-BC89-0507E70121D6::net8.0::BuildMetrics.Lib.Test.RectangularBeamTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::7703CB28-B291-46D6-BC89-0507E70121D6::net8.0::BuildMetrics.Lib.Test.CircularColumnTests&lt;/TestId&gt;
+    &lt;TestId&gt;NUnit3x::7703CB28-B291-46D6-BC89-0507E70121D6::net8.0::BuildMetrics.Lib.Test.RectangularColumnTests&lt;/TestId&gt;
   &lt;/TestAncestor&gt;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
