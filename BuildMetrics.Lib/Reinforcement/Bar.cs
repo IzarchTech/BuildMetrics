@@ -3,7 +3,9 @@ namespace BuildMetrics.Lib.Reinforcement;
 /// <summary>
 /// Bar
 ///
-/// <remarks>Reinforcement</remarks>
+/// <remarks>
+/// Reinforcement From BS 4466
+/// </remarks>
 /// </summary>
 public class Bar
 {
