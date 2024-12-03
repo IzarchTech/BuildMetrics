@@ -12,7 +12,34 @@ public class Bar
     ///
     /// <remarks>Unit for weight is kilogram(kg)</remarks>
     /// </summary>
-    private static readonly List<double> BarWeights = [0.222, 0.395, 0.616, 0.888, 1.579, 2.466, 3.854, 6.313, 9.864];
+    private readonly Dictionary<BarSizes, double> _barWeights = new()
+    {
+        { BarSizes.BarSize6, 0.222 },
+        { BarSizes.BarSize8, 0.395 },
+        { BarSizes.BarSize10, 0.616 },
+        { BarSizes.BarSize12, 0.888 },
+        { BarSizes.BarSize16, 1.579 },
+        { BarSizes.BarSize20, 2.466 },
+        { BarSizes.BarSize25, 3.854 },
+        { BarSizes.BarSize32, 6.313 },
+        { BarSizes.BarSize40, 9.864 }
+    };
+
+    /// <summary>
+    /// Bar diameters in meters
+    /// </summary>
+    private static readonly Dictionary<BarSizes, double> BarDiameters = new()
+    {
+        { BarSizes.BarSize6, 6e-3 },
+        { BarSizes.BarSize8, 8e-3 },
+        { BarSizes.BarSize10, 10e-3 },
+        { BarSizes.BarSize12, 12e-3 },
+        { BarSizes.BarSize16, 16e-3 },
+        { BarSizes.BarSize20, 20e-3 },
+        { BarSizes.BarSize25, 25e-3 },
+        { BarSizes.BarSize32, 32e-3 },
+        { BarSizes.BarSize40, 40e-3 }
+    };
 
     /// <summary>
     /// Bar size
@@ -41,30 +68,7 @@ public class Bar
     /// <returns>Weight in kilogram(kg)</returns>
     public double GetWeight()
     {
-        return BarWeights[(int)Size] * Length;
-    }
-
-    /// <summary>
-    /// Get bar size value
-    /// </summary>
-    /// <param name="size"><see cref="BarSizes"/> enum</param>
-    /// <returns>Size value</returns>
-    /// <exception cref="ArgumentOutOfRangeException">Invalid <see cref="BarSizes"/></exception>
-    private static double GetSize(BarSizes size)
-    {
-        return size switch
-        {
-            BarSizes.BarSize6 => 6e-3,
-            BarSizes.BarSize8 => 8e-3,
-            BarSizes.BarSize10 => 10e-3,
-            BarSizes.BarSize12 => 12e-3,
-            BarSizes.BarSize16 => 16e-3,
-            BarSizes.BarSize20 => 20e-3,
-            BarSizes.BarSize25 => 25e-3,
-            BarSizes.BarSize32 => 32e-3,
-            BarSizes.BarSize40 => 40e-3,
-            _ => throw new ArgumentOutOfRangeException(nameof(size), size, null)
-        };
+        return _barWeights[Size] * Length;
     }
 
     /// <summary>
@@ -73,7 +77,7 @@ public class Bar
     /// <param name="size">Bar size</param>
     /// <param name="a">Length of segment a</param>
     /// <returns>Bar</returns>
-    public static Bar CreateShape20(BarSizes size, double a) => new(size, a);
+    public static Bar CreateShapeCode20(BarSizes size, double a) => new(size, a);
 
     /// <summary>
     /// Create bar with shape code 32
@@ -122,7 +126,7 @@ public class Bar
     /// <param name="e">Length of segment e</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode36(BarSizes size, double a, double b, double c, double d, double e) =>
-        new(size, a + c + e + 0.57 * (b + d) - Math.PI * GetSize(size));
+        new(size, a + c + e + 0.57 * (b + d) - Math.PI * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 37
@@ -133,7 +137,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode37(BarSizes size, double a, double b, double r) =>
-        new Bar(size, a + b - 0.5 * r - GetSize(size));
+        new Bar(size, a + b - 0.5 * r - BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 38
@@ -145,7 +149,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode38(BarSizes size, double a, double b, double c, double r) =>
-        new Bar(size, a + b + c - 2 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + b + c - 2 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 39
@@ -157,7 +161,7 @@ public class Bar
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode39(BarSizes size, double a, double b, double c) =>
         // Combines segments a, b, and c with adjustments based on bar size
-        new Bar(size, a + 0.57 * b + c - 0.5 * Math.PI * GetSize(size));
+        new Bar(size, a + 0.57 * b + c - 0.5 * Math.PI * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 41
@@ -167,11 +171,11 @@ public class Bar
     /// <param name="b">Length of segment b</param>
     /// <param name="c">Length of segment c</param>
     /// <param name="d">Length of segment d (band)</param>
-    /// <param name="r">Radius of band</param>
+    /// <returns>Bar</returns>
     /// <exception cref="ArgumentException">d must be at least 2 * <see cref="GetSize"/></exception>
-    public static Bar CreateShapeCode41(BarSizes size, double a, double b, double c, double d, double r)
+    public static Bar CreateShapeCode41(BarSizes size, double a, double b, double c, double d)
     {
-        if (d < 2 * GetSize(size)) throw new ArgumentException($"d must be at least {2 * GetSize(size)}");
+        if (d < 2 * BarDiameters[size]) throw new ArgumentException($"d must be at least {2 * BarDiameters[size]}");
 
         // Combines segments a, b, and c with adjustments based on bar size
         return new Bar(size, a + b + c);
@@ -213,10 +217,10 @@ public class Bar
     /// <exception cref="ArgumentException">r must be at least <see cref="GetSize"/></exception>
     public static Bar CreateShapeCode45(BarSizes size, double a, double b, double c, double r)
     {
-        if (r < GetSize(size)) throw new ArgumentException($"r must be at least {GetSize(size)}");
+        if (r < BarDiameters[size]) throw new ArgumentException($"r must be at least {BarDiameters[size]}");
 
         // Combines segments a, b, and c with adjustments based on bar size
-        return new Bar(size, a + b + c - 0.5 * r + GetSize(size));
+        return new Bar(size, a + b + c - 0.5 * r + BarDiameters[size]);
     }
 
     /// <summary>
@@ -250,7 +254,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode51(BarSizes size, double a, double b, double r) =>
-        new Bar(size, a + b - 0.5 * r + GetSize(size));
+        new Bar(size, a + b - 0.5 * r + BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 52
@@ -263,7 +267,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode52(BarSizes size, double a, double b, double c, double d, double r) =>
-        new Bar(size, a + b + c + d - 3 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + b + c + d - 3 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 53
@@ -277,7 +281,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode53(BarSizes size, double a, double b, double c, double d, double e, double r) =>
-        new Bar(size, a + b + c + d + e - 4 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + b + c + d + e - 4 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 54
@@ -289,7 +293,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode54(BarSizes size, double a, double b, double c, double r) =>
-        new Bar(size, a + b + c - 2 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + b + c - 2 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 58
@@ -303,7 +307,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode58(BarSizes size, double a, double b, double c, double d, double e, double r) =>
-        new Bar(size, a + b + c + d + e - 4 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + b + c + d + e - 4 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 60
@@ -313,7 +317,7 @@ public class Bar
     /// <param name="b">Length of segment b</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode60(BarSizes size, double a, double b) =>
-        new Bar(size, 2 * (a + b) + 20 * GetSize(size));
+        new Bar(size, 2 * (a + b) + 20 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 62
@@ -342,7 +346,7 @@ public class Bar
     /// <param name="b">Length of segment b</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode72(BarSizes size, double a, double b) =>
-        new Bar(size, 2 * a + b + 25 * GetSize(size));
+        new Bar(size, 2 * a + b + 25 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 73
@@ -353,7 +357,7 @@ public class Bar
     /// <param name="c">Length of segment c</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode73(BarSizes size, double a, double b, double c) =>
-        new Bar(size, 2 * a + b + c + 10 * GetSize(size));
+        new Bar(size, 2 * a + b + c + 10 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 74
@@ -363,7 +367,7 @@ public class Bar
     /// <param name="b">Length of segment b</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode74(BarSizes size, double a, double b) =>
-        new Bar(size, 2 * a + 3 * b + 20 * GetSize(size));
+        new Bar(size, 2 * a + 3 * b + 20 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 75
@@ -377,7 +381,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode75(BarSizes size, double a, double b, double c, double d, double e, double r) =>
-        new Bar(size, a + b + c + 2 * d + e + 10 * GetSize(size));
+        new Bar(size, a + b + c + 2 * d + e + 10 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 81
@@ -387,7 +391,7 @@ public class Bar
     /// <param name="b">Length of segment b</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode81(BarSizes size, double a, double b) =>
-        new Bar(size, 2 * a + 3 * b + 22 * GetSize(size));
+        new Bar(size, 2 * a + 3 * b + 22 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 83
@@ -400,7 +404,7 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode83(BarSizes size, double a, double b, double c, double d, double r) =>
-        new Bar(size, a + 2 * b + c + d - 4 * (0.5 * r + GetSize(size)));
+        new Bar(size, a + 2 * b + c + d - 4 * (0.5 * r + BarDiameters[size]));
 
     /// <summary>
     /// Create bar with shape code 85
@@ -413,25 +417,25 @@ public class Bar
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode85(BarSizes size, double a, double b, double c, double d, double r) =>
-        new Bar(size, a + b + 0.57 * c + d - 0.5 * r - 2.57 * GetSize(size));
+        new Bar(size, a + b + 0.57 * c + d - 0.5 * r - 2.57 * BarDiameters[size]);
 
     /// <summary>
     /// Create bar with shape code 86
     /// </summary>
     /// <remarks>
     /// This function first checks if the value of b is less than a/5.
-    /// If it is, it calculates the length of the bar as c/b * pi * (a + GetSize(size)) + 8 * GetSize(size).
+    /// If it is, it calculates the length of the bar as c/b * pi * (a + BarDiameters[size]) + 8 * BarDiameters[size].
     /// If it is not, it throws a NotImplementedException, since the case where b > a/5 is not implemented.
     /// </remarks>
     /// <param name="size">Bar size</param>
-    /// <param name="a">Length of segment a</param>
-    /// <param name="b">Length of segment b</param>
-    /// <param name="c">Length of segment c</param>
+    /// <param name="a">Internal diameter</param>
+    /// <param name="b">Pitch of the helix</param>
+    /// <param name="c">Overall height of helix</param>
     /// <returns>Bar</returns>
     public static Bar CreateShapeCode86(BarSizes size, double a, double b, double c)
     {
         if (b < a / 5)
-            return new Bar(size, c / b * Math.PI * (a + GetSize(size)) + 8 * GetSize(size));
+            return new Bar(size, c / b * Math.PI * (a + BarDiameters[size]) + 8 * BarDiameters[size]);
 
         throw new NotImplementedException("Case where b > a/5 not implemented");
     }
