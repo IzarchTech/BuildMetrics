@@ -174,7 +174,7 @@ public class Bar
     /// <param name="c">Length of segment c</param>
     /// <param name="d">Length of segment d (band)</param>
     /// <returns>Bar</returns>
-    /// <exception cref="ArgumentException">d must be at least 2 * <see cref="GetSize"/></exception>
+    /// <exception cref="ArgumentException">d must be at least 2 * d</exception>
     public static Bar CreateShapeCode41(BarSizes size, double a, double b, double c, double d)
     {
         if (d < 2 * BarDiameters[size]) throw new ArgumentException($"d must be at least {2 * BarDiameters[size]}");
@@ -216,7 +216,7 @@ public class Bar
     /// <param name="c">Length of segment c</param>
     /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
-    /// <exception cref="ArgumentException">r must be at least <see cref="GetSize"/></exception>
+    /// <exception cref="ArgumentException">r must be at least d</exception>
     public static Bar CreateShapeCode45(BarSizes size, double a, double b, double c, double r)
     {
         if (r < BarDiameters[size]) throw new ArgumentException($"r must be at least {BarDiameters[size]}");
@@ -380,9 +380,8 @@ public class Bar
     /// <param name="c">Length of segment c</param>
     /// <param name="d">Length of segment d</param>
     /// <param name="e">Length of segment e</param>
-    /// <param name="r">Radius of band</param>
     /// <returns>Bar</returns>
-    public static Bar CreateShapeCode75(BarSizes size, double a, double b, double c, double d, double e, double r) =>
+    public static Bar CreateShapeCode75(BarSizes size, double a, double b, double c, double d, double e) =>
         new Bar(size, a + b + c + 2 * d + e + 10 * BarDiameters[size]);
 
     /// <summary>
